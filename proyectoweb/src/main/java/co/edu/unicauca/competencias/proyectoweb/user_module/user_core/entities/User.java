@@ -28,42 +28,59 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private int id;
+    private long id;
 
-    @Column(nullable = false)
-    private String identificacion;
+    @Column(nullable = false, name = "identificacion")
+    private String identity;
 
     @Enumerated(EnumType.STRING)
-    private TypeId tipoId;
+    @Column(nullable = false, name = "tipo identificacion")
+    private TypeId typeId;
 
     @Column(nullable = false, name = "nombre(s)")
-    private String nombres;
+    private String name;
 
     @Column(nullable = false, name = "apellido(s)")
-    private String apellidos;
+    private String lastname;
 
-    @Column(nullable = false)
-    private String titulo;
+    @Column(nullable = false, name = "titulo")
+    private String degree;
 
-    @Column(unique = true, length = 200, nullable = false)
+    @Column(unique = true, length = 200, nullable = false, name = "email")
     private String email;
 
-    @Column(nullable = false)
+    @Column(unique = true, length = 200, nullable = false, name = "username")
+    private String username;
+
+    @Column(nullable = false, name = "contrasenia")
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private StatusUser estado;
+    @Column(name = "telefono")
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "estado")
+    private StatusUser state;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "rol")
     private Role rol;
 
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
 
     @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @Column(name = "failed_attempts", columnDefinition = "integer default 0")
+    private int failedAttempts=0;
+
+    @Column(name = "account_Non_locked", columnDefinition = "boolean default true")
+    private boolean accountNonLocked=true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -77,7 +94,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
@@ -87,7 +104,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return accountNonLocked;
     }
 
     @Override

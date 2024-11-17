@@ -1,11 +1,9 @@
 package co.edu.unicauca.competencias.proyectoweb.user_module.user_configuration;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,11 +15,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@RequiredArgsConstructor
+@Data
 public class JwtService {
 
     @Value("${security.jwt.secret-key}")
-    private final String secretKey;
+    private String secretKey;
 
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
@@ -84,4 +82,5 @@ public class JwtService {
         byte[] keybytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keybytes);
     }
+
 }

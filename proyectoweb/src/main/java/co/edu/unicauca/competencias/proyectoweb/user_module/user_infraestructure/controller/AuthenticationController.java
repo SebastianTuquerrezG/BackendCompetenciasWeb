@@ -1,38 +1,28 @@
 package co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.controller;
 
-import co.edu.unicauca.competencias.proyectoweb.user_module.user_configuration.JwtService;
-import co.edu.unicauca.competencias.proyectoweb.user_module.user_core.entities.User;
-import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.auth.AuthenticationRequest;
-import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.auth.AuthenticationResponse;
-import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.auth.RegisterRequest;
-import co.edu.unicauca.competencias.proyectoweb.user_module.user_service.auth.AuthenticationService;
+import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.authDTO.AuthRequestDTO;
+import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.authDTO.AuthResponseDTO;
+import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.authDTO.RegisterRequestDTO;
+import co.edu.unicauca.competencias.proyectoweb.user_module.user_service.implementations.AuthenticationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
-    private final JwtService jwtService;
-    private final AuthenticationResponse authenticationResponse;
+    private final AuthenticationServiceImpl authenticationServiceImpl;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(authenticationService.register(request));
+    public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO request){
+        return ResponseEntity.ok(authenticationServiceImpl.register(request));
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<User> authenticate(@RequestBody AuthenticationRequest request){
-        User authenticatedUser = authenticationService.authenticate(request);
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-        authenticationResponse.setToken(jwtToken);
-        authenticationResponse.setExpiresIn(jwtService.getExpirationTime());
-        return ResponseEntity.ok(authenticatedUser);
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> authenticate(@RequestBody AuthRequestDTO request){
+       return ResponseEntity.ok(authenticationServiceImpl.authenticate(request));
     }
 }

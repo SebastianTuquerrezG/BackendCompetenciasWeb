@@ -1,4 +1,4 @@
-package co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.auth;
+package co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.authDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-    private String names;
-    private String lastnames;
+public class AuthRequestDTO {
+
     private String email;
     private String password;
 }
