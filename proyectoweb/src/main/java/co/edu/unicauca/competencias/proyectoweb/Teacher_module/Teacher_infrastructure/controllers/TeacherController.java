@@ -13,12 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teachers")
+@CrossOrigin(origins = "*",maxAge = 3600)
 public class TeacherController {
 
     @Autowired
     private ITeacherService teacherService;
 
-    @GetMapping
+    @GetMapping("/getAllTeachers")
     public ResponseEntity<List<Teacher>> getAllTeachers() {
         List<Teacher> teachers = teacherService.getAllTeachers();
         return ResponseEntity.ok(teachers);
@@ -34,9 +35,7 @@ public class TeacherController {
     }
     }
 
-
-
-    @PostMapping
+    @PostMapping("/createTeacher")
     public ResponseEntity<Teacher> createTeacher(@RequestBody Teacher teacher) {
         Teacher createdTeacher = teacherService.createTeacher(teacher);
         return new ResponseEntity<>(createdTeacher, HttpStatus.CREATED);
