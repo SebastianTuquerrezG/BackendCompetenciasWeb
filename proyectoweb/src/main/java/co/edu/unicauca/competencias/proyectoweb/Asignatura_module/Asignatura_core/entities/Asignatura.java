@@ -2,27 +2,26 @@ package co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_co
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-@Entity
+import java.util.Date;
+
+@Builder
 @Data
 @AllArgsConstructor(staticName = "create")
 @NoArgsConstructor
-@Getter
-@Setter
 public class Asignatura {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(nullable = false)
     private String nombre;
-
-    @Column(nullable = false)
     private Integer creditos;
-
-    @Column(nullable = false)
     private String objetivos;
-
-    @Column(nullable = false)
     private Integer semestre;
+    private Status status;
+    private Date created_at;
+    private Date updated_at;
+
+    public enum Status {
+        ACTIVO,
+        INACTIVO
+    }
 }

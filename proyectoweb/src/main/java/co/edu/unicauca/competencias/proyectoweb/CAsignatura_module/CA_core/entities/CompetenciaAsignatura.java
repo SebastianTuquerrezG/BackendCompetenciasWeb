@@ -2,7 +2,6 @@ package co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_core.enti
 
 import jakarta.persistence.Entity;
 
-@Entity
 public class CompetenciaAsignatura {
     private Integer id;
     private Integer idCompetenciaPrograma;
