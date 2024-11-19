@@ -34,4 +34,7 @@ public class RAPrograma {
     @ManyToOne
     @JoinColumn(name = "id_competencia_programa", foreignKey = @ForeignKey(name = "fk_competencia_programa"))
     private CompetenciaPrograma idCompetenciaPrograma;
+
+    @Column(nullable = false)
+    private Integer estado;
 }

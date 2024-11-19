@@ -64,6 +64,9 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
      */
     @Override
     public CompetenciaProgramaDTO update(CompetenciaProgramaDTO competenciaPrograma, Integer id){
+        if(!competenciasProgramaRepository.existsById(id)){
+            return null;
+        }
         CompetenciaPrograma competenciaProgramaEntity = this.modelMapper.map(competenciaPrograma, CompetenciaPrograma.class);
         competenciaProgramaEntity.setId(id);
         competenciasProgramaRepository.save(competenciaProgramaEntity);

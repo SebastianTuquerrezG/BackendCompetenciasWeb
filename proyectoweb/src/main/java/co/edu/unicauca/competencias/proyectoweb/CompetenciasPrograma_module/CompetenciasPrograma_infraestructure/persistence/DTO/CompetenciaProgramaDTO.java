@@ -17,4 +17,5 @@ public class CompetenciaProgramaDTO {
     private String descripcion;
     @Enumerated(EnumType.STRING)
     private NivelCompetencia nivel; // Basico, intermedio, avanzado
+    private Integer estado;
 }

@@ -3,7 +3,6 @@ package co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.Com
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,6 @@ import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.Comp
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_service.interfaces.CompetenciasProgramaServiceInt;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,7 +26,6 @@ public class CompetenciasProgramaController {
     private CompetenciasProgramaServiceInt service;
 
     @GetMapping("/competencias-programa")
-    // @PreAuthorize("hasRole()")
     public List<CompetenciaProgramaDTO> findAll() {
         return service.findAll();
     }
