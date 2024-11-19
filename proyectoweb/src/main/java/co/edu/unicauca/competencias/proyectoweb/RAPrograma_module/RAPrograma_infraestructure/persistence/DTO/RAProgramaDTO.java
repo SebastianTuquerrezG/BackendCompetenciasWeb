@@ -14,4 +14,5 @@ public class RAProgramaDTO {
     private Integer id;
     private String descripcion;
     private CompetenciaPrograma idCompetenciaPrograma;
+    private Integer estado;
 }

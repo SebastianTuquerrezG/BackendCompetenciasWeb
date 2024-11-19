@@ -62,6 +62,9 @@ public class RAServiceImpl implements RAServiceInt {
      * @param id
      */
     public RAProgramaDTO update(RAProgramaDTO raPrograma, Integer id){
+        if(!raProgramaRepository.existsById(id)){
+            return null;
+        }
         RAPrograma raProgramaEntity = this.modelMapper.map(raPrograma, RAPrograma.class);
         raProgramaEntity.setId(id);
         raProgramaRepository.save(raProgramaEntity);

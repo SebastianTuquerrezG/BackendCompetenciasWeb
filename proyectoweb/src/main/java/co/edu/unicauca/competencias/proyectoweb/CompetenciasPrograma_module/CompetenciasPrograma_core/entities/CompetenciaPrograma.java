@@ -30,4 +30,7 @@ public class CompetenciaPrograma {
 
     @Enumerated(EnumType.STRING)
     private NivelCompetencia nivel; 
+
+    @Column(nullable = false)
+    private Integer estado;
 }
