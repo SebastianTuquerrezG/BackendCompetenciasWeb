@@ -55,7 +55,6 @@ public class AsignaturaServiceImpl implements IAsignaturaService {
     }
 
     @Override
-    @Transactional
     public int changeStatus(Integer id, Asignatura.Status status) {
         if (status == Asignatura.Status.ACTIVO) {
             return asignaturaRepository.activate(id) ? 1 : 0;

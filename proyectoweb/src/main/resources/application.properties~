@@ -21,4 +21,3 @@ spring.datasource.password=tomy2765
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 logging.level.org.springframework.security=DEBUG
-spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration

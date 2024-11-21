@@ -96,7 +96,7 @@ public class ORMAsignaturaPersistence implements IAsignaturaRepository{
     public boolean activate(Integer id) {
         AsignaturaEntity asignaturaEntity = entityManager.find(AsignaturaEntity.class, id);
         if (asignaturaEntity != null) {
-            asignaturaEntity.setStatus(Asignatura.Status.valueOf(Asignatura.Status.ACTIVO.name()));
+            asignaturaEntity.setStatus(Asignatura.Status.ACTIVO.name());
             entityManager.merge(asignaturaEntity);
             return true;
         }

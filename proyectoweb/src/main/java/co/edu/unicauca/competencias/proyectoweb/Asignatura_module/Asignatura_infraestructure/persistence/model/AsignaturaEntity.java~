@@ -36,7 +36,7 @@ public class AsignaturaEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Asignatura.Status status;
+    private String status;
 
     @CreationTimestamp
     @Column(updatable = false)
