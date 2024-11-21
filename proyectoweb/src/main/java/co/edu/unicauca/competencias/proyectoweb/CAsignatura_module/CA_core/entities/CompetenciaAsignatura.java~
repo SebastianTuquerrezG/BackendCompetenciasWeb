@@ -19,9 +19,9 @@ public class CompetenciaAsignatura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCompetenciaAsignatura;
 
-    //@OneToOne
-    //@JoinColumn(name = "id_asignatura")
-    //private  IdCompetenciaPrograma;
+    @OneToOne
+    @JoinColumn(name = "id_asignatura")
+    private  IdCompetenciaPrograma;
     private NivelCompetencia nivelCompetencia;
     private Status status;
     private Date created_at;
