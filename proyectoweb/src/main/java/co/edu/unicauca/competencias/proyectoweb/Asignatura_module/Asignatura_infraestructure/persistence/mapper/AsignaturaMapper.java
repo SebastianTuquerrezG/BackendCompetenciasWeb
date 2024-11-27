@@ -1,32 +1,24 @@
 package co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_infraestructure.persistence.mapper;
 
 import co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_core.entities.Asignatura;
-import co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_infraestructure.persistence.model.AsignaturaEntity;
+import co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_infraestructure.persistence.DTO.AsignaturaDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
-import org.mapstruct.Named;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
+@Configuration
 @Mapper(componentModel = "spring")
 public interface AsignaturaMapper {
-    @Mapping(source = "status", target = "status", qualifiedByName = "stringToStatus")
-    Asignatura toAsignatura(AsignaturaEntity asignaturaEntity);
+    @Bean(name = "asignaturaModelMapper")
+    default ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
 
-    @Mapping(source = "status", target = "status", qualifiedByName = "statusToString")
-    AsignaturaEntity toAsignaturaEntity(Asignatura asignatura);
+        modelMapper.typeMap(Asignatura.class, AsignaturaDTO.class).addMappings(mapper -> {
+            mapper.map(Asignatura::getCreated_at, AsignaturaDTO::setCreated_at);
+            mapper.map(Asignatura::getUpdated_at, AsignaturaDTO::setUpdated_at);
+        });
 
-    List<Asignatura> toAsignaturas(List<AsignaturaEntity> asignaturaEntities);
-    List<AsignaturaEntity> toAsignaturasEntities(List<Asignatura> asignaturas);
-
-    @Named("statusToString")
-    default String statusToString(Asignatura.Status status) {
-        return status != null ? status.name() : null;
-    }
-
-    @Named("stringToStatus")
-    default Asignatura.Status stringToStatus(String status) {
-        return status != null ? Asignatura.Status.valueOf(status) : null;
+        return modelMapper;
     }
 }
