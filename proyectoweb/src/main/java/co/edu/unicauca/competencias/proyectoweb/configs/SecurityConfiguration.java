@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/competenciasasignatura/**").permitAll()
                                 .requestMatchers("/api/competencias-programa/**").permitAll()
                                 .requestMatchers("/api/ra-programa/**").permitAll()
+                                .requestMatchers("/api/teachers/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )

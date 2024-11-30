@@ -4,5 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface ITeacherRepository extends JpaRepository<Teacher, Integer> {
-    
+    Teacher findByNames(String names);
+    boolean existsByNames(String names);
+    boolean existsByIdentification(String identification);
 }
