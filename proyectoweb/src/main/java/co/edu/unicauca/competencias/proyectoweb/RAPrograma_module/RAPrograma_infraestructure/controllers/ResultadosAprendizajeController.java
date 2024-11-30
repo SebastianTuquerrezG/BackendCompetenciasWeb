@@ -17,34 +17,36 @@ import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_inf
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_service.interfaces.RAServiceInt;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/ra-programa")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ResultadosAprendizajeController {
-    
-    @Autowired
-    private RAServiceInt service;
+    private final RAServiceInt service;
 
-    @GetMapping("/ra-programa")
+    public ResultadosAprendizajeController(RAServiceInt service) {
+        this.service = service;
+    }
+
+    @GetMapping()
     public List<RAProgramaDTO> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/ra-programa/{id}")
+    @GetMapping("/{id}")
     public RAProgramaDTO findById(@PathVariable Integer id) {
         return service.findById(id);
     }
 
-    @PostMapping("/ra-programa")
+    @PostMapping()
     public void save(@RequestBody RAProgramaDTO raPrograma) {
         service.save(raPrograma);
     }
 
-    @PutMapping("ra-programa/{id}")
+    @PutMapping("/{id}")
     public RAProgramaDTO update(@RequestBody RAProgramaDTO raPrograma, @PathVariable Integer id) {
         return service.update(raPrograma, id);
     }
 
-    @DeleteMapping("/ra-programa/{id}")
+    @DeleteMapping("/{id}")
     public boolean delete(@PathVariable Integer id) {
         return service.delete(id);
     }

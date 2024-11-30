@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IAsignaturaService {
-    public List<AsignaturaDTO> findAllAsignatura();
-    public List<AsignaturaDTO> findActives();
-    public Optional<AsignaturaDTO> findById(Integer id);
-    public Optional<AsignaturaDTO> findByNombre(String nombre);
-    public Optional<AsignaturaDTO> saveAsignatura(AsignaturaDTO asignatura);
-    public Optional<AsignaturaDTO> updateAsignatura(Integer id,AsignaturaDTO asignatura);
-    public int changeStatus(Integer id, String status);
+    List<AsignaturaDTO> findAllAsignatura();
+    List<AsignaturaDTO> findActives();
+    Optional<AsignaturaDTO> findById(Integer id);
+    Optional<AsignaturaDTO> findByNombre(String nombre);
+    Optional<AsignaturaDTO> saveAsignatura(AsignaturaDTO asignatura);
+    Optional<AsignaturaDTO> updateAsignatura(Integer id,AsignaturaDTO asignatura);
+    int changeStatus(Integer id, String status);
 }

@@ -10,6 +10,6 @@ import lombok.*;
 public class RAProgramaDTO {
     private Integer id;
     private String descripcion;
-    private Integer idCompetenciaPrograma;
+    private CompetenciaProgramaDTO idCompetenciaPrograma;
     private Integer estado;
 }

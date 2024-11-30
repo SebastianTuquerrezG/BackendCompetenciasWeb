@@ -10,18 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-// Resultados de aprendizaje por programa
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ra_programa")
+@Table(name = "RA_PROGRAMA")
 public class RAPrograma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +25,6 @@ public class RAPrograma {
     @Column(length = 200)
     private String descripcion;
 
-    // Llave foranea a competencias_programa
     @ManyToOne
     @JoinColumn(name = "id_competencia_programa", foreignKey = @ForeignKey(name = "fk_competencia_programa"))
     private CompetenciaPrograma idCompetenciaPrograma;

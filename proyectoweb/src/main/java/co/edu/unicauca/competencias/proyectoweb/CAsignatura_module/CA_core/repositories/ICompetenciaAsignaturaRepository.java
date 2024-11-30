@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ICompetenciaAsignaturaRepository extends JpaRepository<CompetenciaAsignatura, Integer> {
-    public List<CompetenciaAsignatura> findCompetenciaAsignaturasByStatus(CompetenciaAsignatura.Status status);
+    List<CompetenciaAsignatura> findCompetenciaAsignaturasByStatus(CompetenciaAsignatura.Status status);
 }

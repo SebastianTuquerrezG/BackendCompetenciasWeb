@@ -5,10 +5,10 @@ import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastruc
 import java.util.List;
 
 public interface ICompetenciasAsignaturaServiceInt {
-    public List<CompetenciaAsignaturaDTO> findAll();
-    public CompetenciaAsignaturaDTO findById(Integer id);
-    public List<CompetenciaAsignaturaDTO> findActives(String status);
-    public CompetenciaAsignaturaDTO save(CompetenciaAsignaturaDTO competenciaAsignaturaDTO);
-    public CompetenciaAsignaturaDTO update(Integer id, CompetenciaAsignaturaDTO competenciaAsignaturaDTO);
-    public int updateByStatus(Integer id, String status);
+    List<CompetenciaAsignaturaDTO> findAll();
+    CompetenciaAsignaturaDTO findById(Integer id);
+    List<CompetenciaAsignaturaDTO> findActives(String status);
+    CompetenciaAsignaturaDTO save(CompetenciaAsignaturaDTO competenciaAsignaturaDTO);
+    CompetenciaAsignaturaDTO update(Integer id, CompetenciaAsignaturaDTO competenciaAsignaturaDTO);
+    int updateByStatus(Integer id, String status);
 }

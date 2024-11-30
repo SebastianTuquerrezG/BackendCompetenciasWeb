@@ -2,7 +2,6 @@ package co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_in
 
 import co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_infraestructure.persistence.DTO.AsignaturaDTO;
 import co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_service.interfaces.IAsignaturaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/asignatura")
 public class AsignaturaController {
-    @Autowired
-    private IAsignaturaService asignaturaService;
+    private final IAsignaturaService asignaturaService;
+
+    public AsignaturaController(IAsignaturaService asignaturaService){
+        this.asignaturaService = asignaturaService;
+    }
 
     @GetMapping
     public List<AsignaturaDTO> findAllAsignatura(){

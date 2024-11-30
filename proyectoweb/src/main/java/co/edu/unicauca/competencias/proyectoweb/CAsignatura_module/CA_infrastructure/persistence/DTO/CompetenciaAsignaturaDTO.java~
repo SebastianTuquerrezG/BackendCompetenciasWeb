@@ -20,4 +20,10 @@ public class CompetenciaAsignaturaDTO {
     private NivelCompetencia nivel;
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public CompetenciaAsignaturaDTO(Integer idCompetenciaAsignatura, String descripcion, NivelCompetencia nivelCompetencia) {
+        this.id = idCompetenciaAsignatura;
+        this.descripcion = descripcion;
+        this.nivel = nivelCompetencia;
+    }
 }

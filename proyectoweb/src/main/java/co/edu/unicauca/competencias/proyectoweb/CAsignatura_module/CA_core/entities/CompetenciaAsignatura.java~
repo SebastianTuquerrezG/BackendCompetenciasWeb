@@ -25,7 +25,7 @@ public class CompetenciaAsignatura {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "competencia_programa", nullable = false)
-    @JsonBackReference
+    @JsonManagedReference
     private CompetenciaPrograma CompetenciaPrograma;
 
     @Column(length = 300, nullable = false)

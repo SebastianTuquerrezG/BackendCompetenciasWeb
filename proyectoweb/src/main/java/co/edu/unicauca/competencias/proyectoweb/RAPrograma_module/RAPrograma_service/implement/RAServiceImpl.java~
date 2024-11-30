@@ -42,20 +42,6 @@ public class RAServiceImpl implements RAServiceInt {
 
     public void save(RAProgramaDTO raPrograma){
         RAPrograma raProgramaEntity = new RAPrograma();
-        saveUpdate(raPrograma, raProgramaEntity);
-    }
-
-    public RAProgramaDTO update(RAProgramaDTO raPrograma, Integer id){
-        if(!raProgramaRepository.existsById(id)){
-            return null;
-        }
-        RAPrograma raProgramaEntity = this.modelMapper.map(raPrograma, RAPrograma.class);
-        raProgramaEntity.setId(id);
-        saveUpdate(raPrograma, raProgramaEntity);
-        return raPrograma;
-    }
-
-    private void saveUpdate(RAProgramaDTO raPrograma, RAPrograma raProgramaEntity) {
         raProgramaEntity.setDescripcion(raPrograma.getDescripcion());
         raProgramaEntity.setEstado(raPrograma.getEstado());
 
@@ -66,6 +52,16 @@ public class RAServiceImpl implements RAServiceInt {
         }
 
         raProgramaRepository.save(raProgramaEntity);
+    }
+
+    public RAProgramaDTO update(RAProgramaDTO raPrograma, Integer id){
+        if(!raProgramaRepository.existsById(id)){
+            return null;
+        }
+        RAPrograma raProgramaEntity = this.modelMapper.map(raPrograma, RAPrograma.class);
+        raProgramaEntity.setId(id);
+        raProgramaRepository.save(raProgramaEntity);
+        return raPrograma;
     }
 
     public boolean delete(Integer id){

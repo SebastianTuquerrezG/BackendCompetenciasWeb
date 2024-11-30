@@ -18,34 +18,34 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/api/competencias-programa")
+@RequestMapping("/api")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class CompetenciasProgramaController {
     
     @Autowired
     private CompetenciasProgramaServiceInt service;
 
-    @GetMapping()
+    @GetMapping("/competencias-programa")
     public List<CompetenciaProgramaDTO> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/competencias-programa/{id}")
     public CompetenciaProgramaDTO findById(@PathVariable Integer id) {
         return service.findById(id);
     }
 
-    @PostMapping()
+    @PostMapping("/competencias-programa")
     public void save(@RequestBody CompetenciaProgramaDTO competenciaPrograma) {
         service.save(competenciaPrograma);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("competencias-programa/{id}")
     public CompetenciaProgramaDTO update(@RequestBody CompetenciaProgramaDTO competenciaPrograma, @PathVariable Integer id) {
         return service.update(competenciaPrograma, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/competencias-programa/{id}")
     public boolean delete(@PathVariable Integer id) {
         return service.delete(id);
     }

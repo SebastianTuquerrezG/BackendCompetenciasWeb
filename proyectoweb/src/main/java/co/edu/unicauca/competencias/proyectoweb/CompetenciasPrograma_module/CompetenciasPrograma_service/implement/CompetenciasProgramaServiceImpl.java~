@@ -15,8 +15,6 @@ import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.Comp
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.DTO.CompetenciaProgramaDTO;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_service.interfaces.CompetenciasProgramaServiceInt;
 
-import static co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.mapper.mapper.getRaProgramaDTO;
-
 @Service
 public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServiceInt{
     private final ICompetenciasProgramaRepository competenciasProgramaRepository;
@@ -94,7 +92,16 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
     }
 
     private RAProgramaDTO convertResultadoAprendizajeToDTO(RAPrograma raPrograma) {
-        return getRaProgramaDTO(raPrograma);
+        RAProgramaDTO dto = new RAProgramaDTO();
+        dto.setId(raPrograma.getId());
+        dto.setDescripcion(raPrograma.getDescripcion());
+        dto.setEstado(raPrograma.getEstado());
+
+        if (raPrograma.getIdCompetenciaPrograma() != null) {
+            dto.setIdCompetenciaPrograma(raPrograma.getIdCompetenciaPrograma().getId());
+        }
+
+        return dto;
     }
 
     @Override
@@ -142,5 +149,5 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
         }
         return false;
     }
-
+    
 }

@@ -44,6 +44,6 @@ public class CompetenciaPrograma {
                 ", descripcion='" + descripcion + '\'' +
                 ", nivel=" + nivel +
                 ", estado=" + estado +
-                "}";
+                "}"; // Remove competenciaAsignaturaList from toString
     }
 }
