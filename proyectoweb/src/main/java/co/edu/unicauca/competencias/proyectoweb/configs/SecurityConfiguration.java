@@ -1,8 +1,11 @@
 package co.edu.unicauca.competencias.proyectoweb.configs;
 
 import org.springframework.context.annotation.Bean;
+<<<<<<< HEAD
+=======
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+>>>>>>> 76fd6e811005746a293738d90b7698243fd8f883
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,15 +35,24 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors((c) -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
                         (authorize) -> authorize
+<<<<<<< HEAD
+                                .requestMatchers("/api/auth/**").permitAll()
+                                //.requestMatchers("/api/controller/**").permitAll()
+=======
                                 .requestMatchers("/api/asignatura/**").permitAll()
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/competenciasasignatura/**").permitAll()
                                 .requestMatchers("/api/competencias-programa/**").permitAll()
                                 .requestMatchers("/api/ra-programa/**").permitAll()
                                 .requestMatchers("/api/teachers/**").permitAll()
+<<<<<<< HEAD
                                 .requestMatchers("/api/ra-asignatura/**").permitAll()
+=======
+>>>>>>> 76fd6e811005746a293738d90b7698243fd8f883
+>>>>>>> 229161a773072c1bced3aa31263093a38fbbd70d
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -58,9 +70,10 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:8081"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "UPDATE", "OPTIONS"));
-        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setExposedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 

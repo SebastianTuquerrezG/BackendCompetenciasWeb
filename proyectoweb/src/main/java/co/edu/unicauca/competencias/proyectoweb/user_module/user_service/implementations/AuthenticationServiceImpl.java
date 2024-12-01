@@ -11,32 +11,47 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements iAuthService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
+<<<<<<< HEAD
+
     private final UserServiceImpl userService;
+    private final EmailServiceImpl emailService;
+=======
+    private final UserServiceImpl userService;
+>>>>>>> 76fd6e811005746a293738d90b7698243fd8f883
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Value("${attempts}")
     private int attemptsSecurity;
 
-    public AuthenticationServiceImpl(UserServiceImpl userService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    @Autowired
+    public AuthenticationServiceImpl(UserServiceImpl userService, EmailServiceImpl emailService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtService jwtService, UserDetailsService userDetailsService) {
         this.userService = userService;
+        this.emailService = emailService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     public AuthResponseDTO authenticate(AuthRequestDTO request) {
-        var user = userService.getByEmail(request.getEmail())
+        var user = userService.getByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         System.out.println("Valor de la cuenta: " + user.isAccountNonLocked());
         if (!user.isAccountNonLocked()){
@@ -46,7 +61,7 @@ public class AuthenticationServiceImpl implements iAuthService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
+                            request.getUsername(),
                             request.getPassword()
                     )
             );
@@ -55,13 +70,16 @@ public class AuthenticationServiceImpl implements iAuthService {
 
             var jwtToken = jwtService.generateToken(user);
 
+            // Sending an email by Azure. We need to test this.
+            //emailService.sendTokenByEmail(user.getEmail(), jwtToken);
+
             return AuthResponseDTO.builder()
                     .token(jwtToken)
                     .expiresIn(jwtService.getExpirationTime())
                     .build();
         }catch (Exception e){
             increaseFailedAttempts(user);
-            logger.error("Incorrect email or password: {}", e.getMessage());
+            logger.error("Incorrect username or password: {}", e.getMessage());
             return null;
         }
     }
@@ -78,16 +96,39 @@ public class AuthenticationServiceImpl implements iAuthService {
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPhoneNumber(request.getPhoneNumber());
         user.setState(request.getStatusUser());
         user.setRol(request.getRole());
         user.setCreatedAt(request.getCreatedAt());
         user.setUpdatedAt(request.getUpdatedAt());
         userService.createUser(user);
         var jwtToken = jwtService.generateToken(user);
+
+        // Sending an email by Azure. We need to test this.
+        //emailService.sendTokenByEmail(user.getEmail(), jwtToken);
+
         return AuthResponseDTO.builder()
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
                 .build();
+    }
+
+    @Override
+    public Optional<Boolean> verifyCredentials(String token) {
+        boolean result = false;
+        try {
+            String username = jwtService.extractUsername(token);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                if (jwtService.isTokenValid(token, userDetails)) {
+                    System.out.println("El token es válido. User: " + userDetails);
+                    result = true;
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return Optional.of(result);
     }
 
     private void increaseFailedAttempts(User user){

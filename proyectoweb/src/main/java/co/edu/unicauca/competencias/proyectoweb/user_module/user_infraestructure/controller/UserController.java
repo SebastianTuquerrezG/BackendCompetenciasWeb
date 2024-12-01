@@ -1,13 +1,12 @@
 package co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.controller;
 
 import co.edu.unicauca.competencias.proyectoweb.user_module.user_core.entities.User;
+import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure.authDTO.UserRequestDTO;
 import co.edu.unicauca.competencias.proyectoweb.user_module.user_service.implementations.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -23,5 +22,10 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public Optional<User> unlockAccount(User user){
         return userService.setUserAccountLock(user);
+    }
+
+    @PostMapping("/getUserWithUsername")
+    public ResponseEntity<Optional<User>> getUserWithUsername(@RequestBody UserRequestDTO user){
+        return ResponseEntity.ok(userService.getByUsername(user.getUsername()));
     }
 }
