@@ -1,7 +1,6 @@
 package co.edu.unicauca.competencias.proyectoweb.configs;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,10 +31,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors((c) -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
                         (authorize) -> authorize
-                                .requestMatchers("/api/auth/**")
-                                .permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                //.requestMatchers("/api/controller/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -54,9 +54,10 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:8081"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "UPDATE", "OPTIONS"));
-        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setExposedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 

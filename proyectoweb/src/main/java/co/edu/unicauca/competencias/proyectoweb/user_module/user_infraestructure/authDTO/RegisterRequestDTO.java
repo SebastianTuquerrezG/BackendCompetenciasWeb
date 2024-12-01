@@ -15,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequestDTO {
+    private long id;
     private String identity;
     private TypeId typeId;
     private String name;
@@ -23,8 +24,11 @@ public class RegisterRequestDTO {
     private String email;
     private String username;
     private String password;
+    private String phoneNumber;
     private StatusUser statusUser;
     private Role role;
     private Date createdAt;
     private Date updatedAt;
+    private int failedAttempts;
+    private boolean accountNonLocked;
 }

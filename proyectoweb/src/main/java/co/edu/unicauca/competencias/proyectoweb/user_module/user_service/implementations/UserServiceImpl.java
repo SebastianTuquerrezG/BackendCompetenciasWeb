@@ -5,20 +5,16 @@ import co.edu.unicauca.competencias.proyectoweb.user_module.user_core.entities.U
 import co.edu.unicauca.competencias.proyectoweb.user_module.user_core.repositories.iUserRepository;
 import co.edu.unicauca.competencias.proyectoweb.user_module.user_service.interfaces.iUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements iUserService {
 
-    @Autowired
     private final iUserRepository iUserRepository;
 
+    @Autowired
     public UserServiceImpl(iUserRepository iUserRepository){
         this.iUserRepository = iUserRepository;
     }
@@ -34,8 +30,8 @@ public class UserServiceImpl implements iUserService {
     }
 
     @Override
-    public Optional<User> getByEmail(String email) {
-        return iUserRepository.findByEmail(email);
+    public Optional<User> getByUsername(String username) {
+        return iUserRepository.findByUsername(username);
     }
 
     @Override
@@ -68,11 +64,6 @@ public class UserServiceImpl implements iUserService {
         }catch (Exception e){
             throw new RuntimeException("The user doesn't exits: " + e.getMessage());
         }
-    }
-
-    @Override
-    public Optional<Type> verifyCredentials(String username, String password) {
-        return Optional.empty();
     }
 
     @Override
