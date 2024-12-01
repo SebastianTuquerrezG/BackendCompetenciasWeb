@@ -1,11 +1,6 @@
 package co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_infraestructure.persistence.mapper;
 
-import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_core.entities.CompetenciaAsignatura;
-import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastructure.persistence.DTO.CompetenciaAsignaturaDTO;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.CompetenciaPrograma;
-import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.NivelCompetencia;
-import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.DTO.CompetenciaProgramaDTO;
-import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.mapper.CompetenciaProgramaMapper;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_core.entities.RAPrograma;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_infraestructure.persistence.DTO.RAProgramaDTO;
 import org.mapstruct.Mapper;
@@ -17,8 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.modelmapper.config.Configuration.AccessLevel;
 
-import java.util.Collections;
-
 @Configuration
 @Mapper(componentModel = "spring")
 public interface RAProgramaMapperConfig {
@@ -26,12 +19,10 @@ public interface RAProgramaMapperConfig {
     @Qualifier("raProgramaModelMapper")
     default ModelMapper raProgramaModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-
         modelMapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(AccessLevel.PRIVATE)
-                .setMatchingStrategy(MatchingStrategies.LOOSE)
-                .setPropertyCondition(context -> context.getSourceType() != null);
+                .setMatchingStrategy(MatchingStrategies.STANDARD);
 
         TypeMap<RAPrograma, RAProgramaDTO> raProgramaToDto = modelMapper.createTypeMap(RAPrograma.class, RAProgramaDTO.class);
         raProgramaToDto.addMappings(mapper -> {
@@ -42,7 +33,7 @@ public interface RAProgramaMapperConfig {
             mapper.map(src -> src.getIdCompetenciaPrograma() != null
                             ? src.getIdCompetenciaPrograma().getId()
                             : null,
-                    RAProgramaDTO::setIdCompetenciaPrograma);
+                    (dest, v) -> dest.setIdCompetenciaPrograma((Integer)v));
         });
 
         TypeMap<RAProgramaDTO, RAPrograma> reverseTypeMap = modelMapper.createTypeMap(RAProgramaDTO.class, RAPrograma.class);
@@ -58,7 +49,7 @@ public interface RAProgramaMapperConfig {
                     return competenciaPrograma;
                 }
                 return null;
-            }, RAPrograma::setIdCompetenciaPrograma);
+            }, (dest, v) -> dest.setIdCompetenciaPrograma((CompetenciaPrograma)v));
         });
         return modelMapper;
     }

@@ -7,6 +7,7 @@ import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_core.entit
 import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastructure.persistence.DTO.CompetenciaAsignaturaDTO;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_core.entities.RAPrograma;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_infraestructure.persistence.DTO.RAProgramaDTO;
+import io.swagger.models.auth.In;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -142,8 +143,20 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
     @Override
     public boolean delete(Integer id){
         if(competenciasProgramaRepository.existsById(id)){
-            competenciasProgramaRepository.deleteById(id);
-            return true;
+            CompetenciaPrograma competenciaPrograma = competenciasProgramaRepository.findById(id).orElse(null);
+            if (competenciaPrograma != null) {
+                Integer state = competenciaPrograma.getEstado();
+                if (state == 1) {
+                    competenciaPrograma.setEstado(0);
+                    competenciasProgramaRepository.save(competenciaPrograma);
+                    return true;
+                } else if (state == 0) {
+                    competenciaPrograma.setEstado(1);
+                    competenciasProgramaRepository.save(competenciaPrograma);
+                    return true;
+                }
+                return false;
+            }
         }
         return false;
     }

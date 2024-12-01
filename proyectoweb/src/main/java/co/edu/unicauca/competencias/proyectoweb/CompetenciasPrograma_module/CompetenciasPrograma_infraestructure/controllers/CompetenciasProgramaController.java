@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/api/competencias-programa")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class CompetenciasProgramaController {
-    
-    @Autowired
-    private CompetenciasProgramaServiceInt service;
+    private final CompetenciasProgramaServiceInt service;
+
+    public CompetenciasProgramaController(CompetenciasProgramaServiceInt service) {
+        this.service = service;
+    }
 
     @GetMapping()
     public List<CompetenciaProgramaDTO> findAll() {
