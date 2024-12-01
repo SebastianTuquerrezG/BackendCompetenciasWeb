@@ -8,7 +8,6 @@ import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure
 import co.edu.unicauca.competencias.proyectoweb.user_module.user_service.interfaces.iAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,9 +24,13 @@ import java.util.Optional;
 public class AuthenticationServiceImpl implements iAuthService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
+<<<<<<< HEAD
 
     private final UserServiceImpl userService;
     private final EmailServiceImpl emailService;
+=======
+    private final UserServiceImpl userService;
+>>>>>>> 76fd6e811005746a293738d90b7698243fd8f883
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;

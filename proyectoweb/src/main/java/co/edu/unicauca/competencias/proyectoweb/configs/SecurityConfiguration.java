@@ -1,6 +1,11 @@
 package co.edu.unicauca.competencias.proyectoweb.configs;
 
 import org.springframework.context.annotation.Bean;
+<<<<<<< HEAD
+=======
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+>>>>>>> 76fd6e811005746a293738d90b7698243fd8f883
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,15 +32,23 @@ public class SecurityConfiguration {
         this.jwtAuthFilter = jwtAuthFilter;
         this.authenticationProvider = authenticationProvider;
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors((c) -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
                         (authorize) -> authorize
+<<<<<<< HEAD
                                 .requestMatchers("/api/auth/**").permitAll()
                                 //.requestMatchers("/api/controller/**").permitAll()
+=======
+                                .requestMatchers("/api/asignatura/**").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/competenciasasignatura/**").permitAll()
+                                .requestMatchers("/api/competencias-programa/**").permitAll()
+                                .requestMatchers("/api/ra-programa/**").permitAll()
+                                .requestMatchers("/api/teachers/**").permitAll()
+>>>>>>> 76fd6e811005746a293738d90b7698243fd8f883
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -47,7 +60,6 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
-        
         return http.build();
     }
 
@@ -64,4 +76,6 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
+
+
 }
