@@ -4,13 +4,17 @@ import co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_cor
 import co.edu.unicauca.competencias.proyectoweb.Asignatura_module.Asignatura_infraestructure.persistence.DTO.AsignaturaDTO;
 import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 @Mapper(componentModel = "spring")
+@Primary
 public interface AsignaturaMapper {
     @Bean(name = "asignaturaModelMapper")
+    @Qualifier("asignaturaModelMapper")
     default ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 

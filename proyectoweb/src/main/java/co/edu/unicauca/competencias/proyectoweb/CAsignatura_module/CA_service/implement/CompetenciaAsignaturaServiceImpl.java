@@ -6,7 +6,11 @@ import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastruc
 import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_service.interfaces.ICompetenciasAsignaturaServiceInt;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.CompetenciaPrograma;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.repositories.ICompetenciasProgramaRepository;
+import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_core.entities.RAAsignatura;
+import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_infraestructure.persistence.DTO.RAAsignaturaDTO;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +24,8 @@ public class CompetenciaAsignaturaServiceImpl implements ICompetenciasAsignatura
 
     private final ModelMapper modelMapper;
 
-    public CompetenciaAsignaturaServiceImpl(ICompetenciaAsignaturaRepository competenciaAsignaturaRepository, ICompetenciasProgramaRepository competenciasProgramaRepository, ModelMapper modelMapper) {
+    @Autowired
+    public CompetenciaAsignaturaServiceImpl(ICompetenciaAsignaturaRepository competenciaAsignaturaRepository, ICompetenciasProgramaRepository competenciasProgramaRepository,@Qualifier("ca_mapper") ModelMapper modelMapper) {
         this.competenciaAsignaturaRepository = competenciaAsignaturaRepository;
         this.competenciasProgramaRepository = competenciasProgramaRepository;
         this.modelMapper = modelMapper;
@@ -30,9 +35,21 @@ public class CompetenciaAsignaturaServiceImpl implements ICompetenciasAsignatura
     public List<CompetenciaAsignaturaDTO> findAll() {
         List<CompetenciaAsignatura> competenciaAsignaturaList = competenciaAsignaturaRepository.findAll();
 
-        return competenciaAsignaturaList.stream().map(this::getCompetenciaAsignaturaDTO).collect(Collectors.toList());
+        return getCompetenciaAsignaturaDTOS(competenciaAsignaturaList);
     }
 
+    private RAAsignaturaDTO mapRAAsignatura(RAAsignatura raAsignatura) {
+        RAAsignaturaDTO dto = new RAAsignaturaDTO();
+        dto.setId(raAsignatura.getId());
+        dto.setDescripcion(raAsignatura.getDescripcion());
+        dto.setEstado(String.valueOf(raAsignatura.getEstado()));
+        dto.setIdCompetenciaAsignatura(
+                raAsignatura.getCompetenciaAsignatura() != null
+                        ? raAsignatura.getCompetenciaAsignatura().getIdCompetenciaAsignatura()
+                        : null
+        );
+        return dto;
+    }
 
     @Override
     public CompetenciaAsignaturaDTO findById(Integer id) {
@@ -41,16 +58,15 @@ public class CompetenciaAsignaturaServiceImpl implements ICompetenciasAsignatura
             return null;
         }
 
-        CompetenciaAsignaturaDTO dto = new CompetenciaAsignaturaDTO();
-        dto.setId(competenciaAsignatura.getIdCompetenciaAsignatura());
-        dto.setCompetenciaprograma(
-                competenciaAsignatura.getCompetenciaPrograma() != null
-                        ? competenciaAsignatura.getCompetenciaPrograma().getId()
-                        : null
-        );
-        dto.setDescripcion(competenciaAsignatura.getDescripcion());
-        dto.setNivel(competenciaAsignatura.getNivelCompetencia());
-        dto.setStatus(competenciaAsignatura.getStatus());
+        CompetenciaAsignaturaDTO dto = modelMapper.map(competenciaAsignatura, CompetenciaAsignaturaDTO.class);
+
+        if (competenciaAsignatura.getRaAsignaturas() != null) {
+            dto.setRaAsignaturas(
+                    competenciaAsignatura.getRaAsignaturas().stream()
+                            .map(this::mapRAAsignatura)
+                            .collect(Collectors.toList())
+            );
+        }
 
         return dto;
     }
@@ -61,18 +77,22 @@ public class CompetenciaAsignaturaServiceImpl implements ICompetenciasAsignatura
         List<CompetenciaAsignatura> competenciaAsignaturaList =
                 competenciaAsignaturaRepository.findCompetenciaAsignaturasByStatus(CompetenciaAsignatura.Status.valueOf(status));
 
+        return getCompetenciaAsignaturaDTOS(competenciaAsignaturaList);
+    }
+
+    private List<CompetenciaAsignaturaDTO> getCompetenciaAsignaturaDTOS(List<CompetenciaAsignatura> competenciaAsignaturaList) {
         return competenciaAsignaturaList.stream()
                 .map(competenciaAsignatura -> {
-                    CompetenciaAsignaturaDTO dto = new CompetenciaAsignaturaDTO();
-                    dto.setId(competenciaAsignatura.getIdCompetenciaAsignatura());
-                    dto.setCompetenciaprograma(
-                            competenciaAsignatura.getCompetenciaPrograma() != null
-                                    ? competenciaAsignatura.getCompetenciaPrograma().getId()
-                                    : null
-                    );
-                    dto.setDescripcion(competenciaAsignatura.getDescripcion());
-                    dto.setNivel(competenciaAsignatura.getNivelCompetencia());
-                    dto.setStatus(competenciaAsignatura.getStatus());
+                    CompetenciaAsignaturaDTO dto = modelMapper.map(competenciaAsignatura, CompetenciaAsignaturaDTO.class);
+
+                    if (competenciaAsignatura.getRaAsignaturas() != null) {
+                        dto.setRaAsignaturas(
+                                competenciaAsignatura.getRaAsignaturas().stream()
+                                        .map(this::mapRAAsignatura)
+                                        .collect(Collectors.toList())
+                        );
+                    }
+
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -89,8 +109,8 @@ public class CompetenciaAsignaturaServiceImpl implements ICompetenciasAsignatura
         CompetenciaAsignatura entity = modelMapper.map(competenciaAsignaturaDTO, CompetenciaAsignatura.class);
         entity.setCompetenciaPrograma(competenciaPrograma);
         entity.setDescripcion(competenciaAsignaturaDTO.getDescripcion());
-        entity.setNivelCompetencia(CompetenciaAsignatura.NivelCompetencia.valueOf(competenciaAsignaturaDTO.getNivel().name()));
-        entity.setStatus(CompetenciaAsignatura.Status.valueOf(competenciaAsignaturaDTO.getStatus().name()));
+        entity.setNivelCompetencia(CompetenciaAsignatura.NivelCompetencia.valueOf(competenciaAsignaturaDTO.getNivel()));
+        entity.setStatus(CompetenciaAsignatura.Status.valueOf(competenciaAsignaturaDTO.getStatus()));
 
         CompetenciaAsignatura savedEntity = competenciaAsignaturaRepository.save(entity);
 
@@ -102,8 +122,8 @@ public class CompetenciaAsignaturaServiceImpl implements ICompetenciasAsignatura
         savedDTO.setId(savedEntity.getIdCompetenciaAsignatura());
         savedDTO.setCompetenciaprograma(savedEntity.getCompetenciaPrograma().getId());
         savedDTO.setDescripcion(savedEntity.getDescripcion());
-        savedDTO.setNivel(savedEntity.getNivelCompetencia());
-        savedDTO.setStatus(savedEntity.getStatus());
+        savedDTO.setNivel(String.valueOf(savedEntity.getNivelCompetencia()));
+        savedDTO.setStatus(String.valueOf(savedEntity.getStatus()));
 
         return savedDTO;
     }

@@ -6,17 +6,21 @@ import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.Comp
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.DTO.CompetenciaProgramaDTO;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_core.entities.RAPrograma;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_infraestructure.persistence.DTO.RAProgramaDTO;
+import org.mapstruct.Mapper;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.stream.Collectors;
 
 @Configuration
-public class mapper {
-    @Bean
-    public ModelMapper modelMapper() {
+@Mapper(componentModel = "spring")
+public interface CompetenciaProgramaMapper {
+    @Bean(name = "cp_mapper")
+    @Qualifier("cp_mapper")
+     default ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
         modelMapper.createTypeMap(CompetenciaPrograma.class, CompetenciaProgramaDTO.class)
@@ -27,12 +31,10 @@ public class mapper {
                             CompetenciaProgramaDTO::setNivel);
                     mapper.map(CompetenciaPrograma::getEstado, CompetenciaProgramaDTO::setEstado);
 
-                    // Explicitly skip these collections to prevent automatic conversion
                     mapper.skip(CompetenciaProgramaDTO::setCompetenciasAsignaturas);
                     mapper.skip(CompetenciaProgramaDTO::setListResultadosAprendizaje);
                 });
 
-        // Use custom converter for collections
         modelMapper.addConverter(new AbstractConverter<CompetenciaPrograma, CompetenciaProgramaDTO>() {
             @Override
             protected CompetenciaProgramaDTO convert(CompetenciaPrograma source) {
@@ -61,8 +63,8 @@ public class mapper {
                 CompetenciaAsignaturaDTO dto = new CompetenciaAsignaturaDTO();
                 dto.setId(asignatura.getIdCompetenciaAsignatura());
                 dto.setDescripcion(asignatura.getDescripcion());
-                dto.setNivel(asignatura.getNivelCompetencia());
-                dto.setStatus(asignatura.getStatus());
+                dto.setNivel(String.valueOf(asignatura.getNivelCompetencia()));
+                dto.setStatus(String.valueOf(asignatura.getStatus()));
 
                 if (asignatura.getCompetenciaPrograma() != null) {
                     dto.setCompetenciaprograma(asignatura.getCompetenciaPrograma().getId());
@@ -79,7 +81,7 @@ public class mapper {
         return modelMapper;
     }
 
-    public static RAProgramaDTO getRaProgramaDTO(RAPrograma raPrograma) {
+    static RAProgramaDTO getRaProgramaDTO(RAPrograma raPrograma) {
         RAProgramaDTO dto = new RAProgramaDTO();
         dto.setId(raPrograma.getId());
         dto.setDescripcion(raPrograma.getDescripcion());
@@ -90,18 +92,5 @@ public class mapper {
         }
 
         return dto;
-    }
-
-    public static void mapperRAP(ModelMapper modelMapper) {
-        modelMapper.createTypeMap(RAPrograma.class, RAProgramaDTO.class)
-                .addMappings(mapper -> {
-                    mapper.map(RAPrograma::getId, RAProgramaDTO::setId);
-                    mapper.map(RAPrograma::getDescripcion, RAProgramaDTO::setDescripcion);
-                    mapper.map(src -> src.getIdCompetenciaPrograma() != null ?
-                                    src.getIdCompetenciaPrograma().getId() :
-                                    null,
-                            RAProgramaDTO::setIdCompetenciaPrograma);
-                    mapper.map(RAPrograma::getEstado, RAProgramaDTO::setEstado);
-                });
     }
 }

@@ -18,10 +18,9 @@ import java.util.stream.Collectors;
 public class TeacherServiceImpl implements ITeacherService {
     private final ITeacherRepository teacherRepository;
 
-    @Qualifier("teacherModelMapper")
     private final ModelMapper modelMapper;
 
-    public TeacherServiceImpl(ITeacherRepository teacherRepository, ModelMapper modelMapper) {
+    public TeacherServiceImpl(ITeacherRepository teacherRepository,@Qualifier("teacherModelMapper") ModelMapper modelMapper) {
         this.teacherRepository = teacherRepository;
         this.modelMapper = modelMapper;
     }

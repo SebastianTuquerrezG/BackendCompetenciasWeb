@@ -1,6 +1,8 @@
 package co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_service.implement;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.CompetenciaPrograma;
 import org.modelmapper.ModelMapper;
@@ -18,18 +20,30 @@ import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_ser
 public class RAServiceImpl implements RAServiceInt {
     private final IRAProgramaRepository raProgramaRepository;
 
-    @Qualifier("raProgramaModelMapper")
     private final ModelMapper modelMapper;
 
-    public RAServiceImpl(ModelMapper modelMapper, IRAProgramaRepository raProgramaRepository){
+    public RAServiceImpl(@Qualifier("raProgramaModelMapper") ModelMapper modelMapper, IRAProgramaRepository raProgramaRepository){
         this.modelMapper = modelMapper;
         this.raProgramaRepository = raProgramaRepository;
     }
 
     @Override
-    public List<RAProgramaDTO> findAll(){
+    public List<RAProgramaDTO> findAll() {
         List<RAPrograma> raPrograma = raProgramaRepository.findAll();
-        return this.modelMapper.map(raPrograma, new TypeToken<List<RAProgramaDTO>>(){}.getType());
+        return raPrograma.stream()
+                .map(programa -> {
+                    RAProgramaDTO dto = new RAProgramaDTO();
+                    dto.setId(programa.getId());
+                    dto.setDescripcion(programa.getDescripcion());
+                    dto.setEstado(programa.getEstado());
+                    dto.setIdCompetenciaPrograma(
+                            programa.getIdCompetenciaPrograma() != null
+                                    ? programa.getIdCompetenciaPrograma().getId()
+                                    : null
+                    );
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     public RAProgramaDTO findById(Integer id){

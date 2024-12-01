@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 public class AsignaturaServiceImpl implements IAsignaturaService {
     private final IAsignaturaRepository asignaturaRepository;
 
-    @Qualifier("asignaturaModelMapper")
     private final ModelMapper modelMapper;
 
-    public AsignaturaServiceImpl(IAsignaturaRepository asignaturaRepository, ModelMapper modelMapper) {
+    public AsignaturaServiceImpl(IAsignaturaRepository asignaturaRepository,
+                                 @Qualifier("asignaturaModelMapper") ModelMapper modelMapper) {
         this.asignaturaRepository = asignaturaRepository;
         this.modelMapper = modelMapper;
     }

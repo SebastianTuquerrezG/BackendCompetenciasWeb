@@ -1,23 +1,21 @@
 package co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastructure.persistence.DTO;
 
-import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_core.entities.CompetenciaAsignatura.*;
-import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.DTO.CompetenciaProgramaDTO;
-import io.swagger.models.auth.In;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_infraestructure.persistence.DTO.RAAsignaturaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompetenciaAsignaturaDTO {
-    private int id;
+    private Integer id;
     private Integer competenciaprograma;
     private String descripcion;
-    @Enumerated(EnumType.STRING)
-    private NivelCompetencia nivel;
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    private String nivel;
+    private String status;
+    private List<RAAsignaturaDTO> raAsignaturas = new ArrayList<>();
 }

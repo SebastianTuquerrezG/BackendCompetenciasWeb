@@ -8,6 +8,8 @@ import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastruc
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_core.entities.RAPrograma;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_infraestructure.persistence.DTO.RAProgramaDTO;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.CompetenciaPrograma;
@@ -15,14 +17,15 @@ import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.Comp
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.DTO.CompetenciaProgramaDTO;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_service.interfaces.CompetenciasProgramaServiceInt;
 
-import static co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.mapper.mapper.getRaProgramaDTO;
+import static co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.mapper.CompetenciaProgramaMapper.getRaProgramaDTO;
 
 @Service
 public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServiceInt{
     private final ICompetenciasProgramaRepository competenciasProgramaRepository;
     private final ModelMapper modelMapper;
 
-    public CompetenciasProgramaServiceImpl(ModelMapper modelMapper, ICompetenciasProgramaRepository competenciasProgramaRepository){
+    @Autowired
+    public CompetenciasProgramaServiceImpl(@Qualifier("cp_mapper") ModelMapper modelMapper, ICompetenciasProgramaRepository competenciasProgramaRepository){
         this.modelMapper = modelMapper;
         this.competenciasProgramaRepository = competenciasProgramaRepository;
     }
@@ -64,10 +67,12 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
     }
 
     private boolean isCompetenciaAsignaturaValid(CompetenciaAsignatura competenciaAsignatura) {
-        return competenciaAsignatura != null &&
+        if (competenciaAsignatura != null &&
                 (competenciaAsignatura.getIdCompetenciaAsignatura() != null ||
                         competenciaAsignatura.getDescripcion() != null ||
-                        competenciaAsignatura.getNivelCompetencia() != null);
+                        competenciaAsignatura.getNivelCompetencia() != null)) return true;
+        assert competenciaAsignatura != null;
+        return competenciaAsignatura.getRaAsignaturas() != null;
     }
 
     private boolean isResultadoAprendizajeValid(RAPrograma raPrograma) {
@@ -81,8 +86,8 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
         CompetenciaAsignaturaDTO dto = new CompetenciaAsignaturaDTO();
         dto.setId(competenciaAsignatura.getIdCompetenciaAsignatura());
         dto.setDescripcion(competenciaAsignatura.getDescripcion());
-        dto.setNivel(competenciaAsignatura.getNivelCompetencia());
-        dto.setStatus(competenciaAsignatura.getStatus());
+        dto.setNivel(String.valueOf(competenciaAsignatura.getNivelCompetencia()));
+        dto.setStatus(String.valueOf(competenciaAsignatura.getStatus()));
 
         if (competenciaAsignatura.getCompetenciaPrograma() != null) {
             CompetenciaProgramaDTO competenciaProgramaDTO = new CompetenciaProgramaDTO();

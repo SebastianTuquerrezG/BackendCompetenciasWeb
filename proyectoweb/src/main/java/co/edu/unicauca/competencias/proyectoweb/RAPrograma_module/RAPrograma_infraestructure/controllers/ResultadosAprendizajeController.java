@@ -22,6 +22,7 @@ import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_ser
 public class ResultadosAprendizajeController {
     private final RAServiceInt service;
 
+    @Autowired
     public ResultadosAprendizajeController(RAServiceInt service) {
         this.service = service;
     }

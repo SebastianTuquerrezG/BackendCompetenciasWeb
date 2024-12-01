@@ -3,16 +3,22 @@ package co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastru
 import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_core.entities.CompetenciaAsignatura;
 import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastructure.persistence.DTO.CompetenciaAsignaturaDTO;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.CompetenciaPrograma;
+import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_core.entities.RAAsignatura;
+import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_infraestructure.persistence.DTO.RAAsignaturaDTO;
 import org.mapstruct.Mapper;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.stream.Collectors;
+
 @Configuration
 @Mapper(componentModel = "spring")
-public interface mapper {
+public interface CompetenciaAsignaturamapper {
     @Bean(name = "ca_mapper")
+    @Qualifier("ca_mapper")
     default ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
@@ -30,6 +36,36 @@ public interface mapper {
                             CompetenciaAsignaturaDTO::setCompetenciaprograma
                     );
                 });
+
+        modelMapper.addConverter(new AbstractConverter<CompetenciaAsignatura, CompetenciaAsignaturaDTO>() {
+            @Override
+            protected CompetenciaAsignaturaDTO convert(CompetenciaAsignatura competenciaAsignatura) {
+                CompetenciaAsignaturaDTO competenciaAsignaturaDTO = new CompetenciaAsignaturaDTO();
+                competenciaAsignaturaDTO.setId(competenciaAsignatura.getIdCompetenciaAsignatura());
+                competenciaAsignaturaDTO.setDescripcion(competenciaAsignatura.getDescripcion());
+                competenciaAsignaturaDTO.setNivel(String.valueOf(competenciaAsignatura.getNivelCompetencia()));
+                competenciaAsignaturaDTO.setStatus(String.valueOf(competenciaAsignatura.getStatus()));
+                competenciaAsignaturaDTO.setCompetenciaprograma(
+                        competenciaAsignatura.getCompetenciaPrograma() != null
+                                ? competenciaAsignatura.getCompetenciaPrograma().getId()
+                                : null
+                );
+
+                if (competenciaAsignatura.getRaAsignaturas() != null) {
+                    competenciaAsignaturaDTO.setRaAsignaturas(
+                            competenciaAsignatura.getRaAsignaturas().stream()
+                                    .map(this::mapResultadoAprendizaje)
+                                    .collect(Collectors.toList())
+                    );
+                }
+
+                return competenciaAsignaturaDTO;
+            }
+
+            private RAAsignaturaDTO mapResultadoAprendizaje(RAAsignatura raAsignatura) {
+                return getRAAsignaturaDTO(raAsignatura);
+            }
+        });
 
         modelMapper.createTypeMap(CompetenciaAsignaturaDTO.class, CompetenciaAsignatura.class)
                 .addMappings(mapper -> {
@@ -57,5 +93,18 @@ public interface mapper {
         });
 
         return modelMapper;
+    }
+
+    static RAAsignaturaDTO getRAAsignaturaDTO(RAAsignatura raAsignatura) {
+        RAAsignaturaDTO raAsignaturaDTO = new RAAsignaturaDTO();
+        raAsignaturaDTO.setId(raAsignatura.getId());
+        raAsignaturaDTO.setDescripcion(raAsignatura.getDescripcion());
+        raAsignaturaDTO.setEstado(String.valueOf(raAsignatura.getEstado()));
+
+        if (raAsignatura.getCompetenciaAsignatura() != null) {
+            raAsignaturaDTO.setIdCompetenciaAsignatura(raAsignatura.getCompetenciaAsignatura().getIdCompetenciaAsignatura());
+        }
+
+        return raAsignaturaDTO;
     }
 }

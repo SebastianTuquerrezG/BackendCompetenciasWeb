@@ -5,82 +5,61 @@ import co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_infrastruc
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.CompetenciaPrograma;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.NivelCompetencia;
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.DTO.CompetenciaProgramaDTO;
-import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.mapper.mapper;
+import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_infraestructure.persistence.mapper.CompetenciaProgramaMapper;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_core.entities.RAPrograma;
 import co.edu.unicauca.competencias.proyectoweb.RAPrograma_module.RAPrograma_infraestructure.persistence.DTO.RAProgramaDTO;
+import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.modelmapper.config.Configuration.AccessLevel;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 @Configuration
-public class RAProgramaMapperConfig {
-    @Bean
-    public ModelMapper raProgramaModelMapper() {
+@Mapper(componentModel = "spring")
+public interface RAProgramaMapperConfig {
+    @Bean(name = "raProgramaModelMapper")
+    @Qualifier("raProgramaModelMapper")
+    default ModelMapper raProgramaModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
-        mapper.mapperRAP(modelMapper);
+        modelMapper.getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(AccessLevel.PRIVATE)
+                .setMatchingStrategy(MatchingStrategies.LOOSE)
+                .setPropertyCondition(context -> context.getSourceType() != null);
 
-        modelMapper.createTypeMap(RAProgramaDTO.class, RAPrograma.class)
-                .addMappings(mapper -> {
-                    mapper.map(RAProgramaDTO::getId, RAPrograma::setId);
-                    mapper.map(RAProgramaDTO::getDescripcion, RAPrograma::setDescripcion);
-                    mapper.map(
-                            src -> {
-                                if (src.getIdCompetenciaPrograma() != null) {
-                                    CompetenciaPrograma competenciaPrograma = new CompetenciaPrograma();
-                                    competenciaPrograma.setId(src.getIdCompetenciaPrograma());
-                                    return competenciaPrograma;
-                                }
-                                return null;
-                            },
-                            RAPrograma::setIdCompetenciaPrograma
-                    );
-                    mapper.map(RAProgramaDTO::getEstado, RAPrograma::setEstado);
-                });
+        TypeMap<RAPrograma, RAProgramaDTO> raProgramaToDto = modelMapper.createTypeMap(RAPrograma.class, RAProgramaDTO.class);
+        raProgramaToDto.addMappings(mapper -> {
+            mapper.map(RAPrograma::getId, RAProgramaDTO::setId);
+            mapper.map(RAPrograma::getDescripcion, RAProgramaDTO::setDescripcion);
+            mapper.map(RAPrograma::getEstado, RAProgramaDTO::setEstado);
 
+            mapper.map(src -> src.getIdCompetenciaPrograma() != null
+                            ? src.getIdCompetenciaPrograma().getId()
+                            : null,
+                    RAProgramaDTO::setIdCompetenciaPrograma);
+        });
+
+        TypeMap<RAProgramaDTO, RAPrograma> reverseTypeMap = modelMapper.createTypeMap(RAProgramaDTO.class, RAPrograma.class);
+        reverseTypeMap.addMappings(mapper -> {
+            mapper.map(RAProgramaDTO::getId, RAPrograma::setId);
+            mapper.map(RAProgramaDTO::getDescripcion, RAPrograma::setDescripcion);
+            mapper.map(RAProgramaDTO::getEstado, RAPrograma::setEstado);
+
+            mapper.map(src -> {
+                if (src.getIdCompetenciaPrograma() != null) {
+                    CompetenciaPrograma competenciaPrograma = new CompetenciaPrograma();
+                    competenciaPrograma.setId(src.getIdCompetenciaPrograma());
+                    return competenciaPrograma;
+                }
+                return null;
+            }, RAPrograma::setIdCompetenciaPrograma);
+        });
         return modelMapper;
-    }
-
-    private CompetenciaProgramaDTO mapCompetenciaPrograma(CompetenciaPrograma competenciaPrograma) {
-        if (competenciaPrograma == null) return null;
-
-        CompetenciaProgramaDTO dto = new CompetenciaProgramaDTO();
-        dto.setId(competenciaPrograma.getId());
-        dto.setDescripcion(competenciaPrograma.getDescripcion());
-        dto.setNivel(competenciaPrograma.getNivel() != null ?
-                competenciaPrograma.getNivel().name() : null);
-        dto.setEstado(competenciaPrograma.getEstado());
-
-        dto.setCompetenciasAsignaturas(Collections.emptyList());
-
-        return dto;
-    }
-
-    private CompetenciaPrograma mapCompetenciaProgramaInverso(CompetenciaProgramaDTO dto) {
-        if (dto == null) return null;
-
-        CompetenciaPrograma competenciaPrograma = new CompetenciaPrograma();
-        competenciaPrograma.setId(dto.getId());
-        competenciaPrograma.setDescripcion(dto.getDescripcion());
-        competenciaPrograma.setNivel(dto.getNivel() != null ?
-                NivelCompetencia.valueOf(dto.getNivel()) : null);
-        competenciaPrograma.setEstado(dto.getEstado());
-
-        return competenciaPrograma;
-    }
-
-    private CompetenciaAsignaturaDTO mapCompetenciaAsignatura(CompetenciaAsignatura competenciaAsignatura) {
-        if (competenciaAsignatura == null) return null;
-
-        CompetenciaAsignaturaDTO dto = new CompetenciaAsignaturaDTO();
-        dto.setId(competenciaAsignatura.getIdCompetenciaAsignatura());
-        dto.setDescripcion(competenciaAsignatura.getDescripcion());
-        dto.setNivel(competenciaAsignatura.getNivelCompetencia());
-        dto.setStatus(competenciaAsignatura.getStatus());
-
-        return dto;
     }
 }

@@ -20,6 +20,7 @@ import lombok.*;
 public class RAPrograma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false, unique = true)
     private Integer id;
 
     @Column(length = 200)

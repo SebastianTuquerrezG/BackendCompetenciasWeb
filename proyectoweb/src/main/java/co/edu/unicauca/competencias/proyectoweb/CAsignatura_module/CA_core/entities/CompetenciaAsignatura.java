@@ -1,6 +1,7 @@
 package co.edu.unicauca.competencias.proyectoweb.CAsignatura_module.CA_core.entities;
 
 import co.edu.unicauca.competencias.proyectoweb.CompetenciasPrograma_module.CompetenciasPrograma_core.entities.CompetenciaPrograma;
+import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_core.entities.RAAsignatura;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @Data
@@ -27,6 +29,9 @@ public class CompetenciaAsignatura {
     @JoinColumn(name = "competencia_programa", nullable = false)
     @JsonBackReference
     private CompetenciaPrograma CompetenciaPrograma;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "CompetenciaAsignatura")
+    private List<RAAsignatura> raAsignaturas;
 
     @Column(length = 300, nullable = false)
     private String descripcion;
