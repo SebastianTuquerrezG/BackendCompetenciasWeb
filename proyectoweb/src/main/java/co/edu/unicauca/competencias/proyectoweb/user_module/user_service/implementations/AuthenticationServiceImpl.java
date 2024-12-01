@@ -8,7 +8,6 @@ import co.edu.unicauca.competencias.proyectoweb.user_module.user_infraestructure
 import co.edu.unicauca.competencias.proyectoweb.user_module.user_service.interfaces.iAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,14 +19,9 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements iAuthService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
-
-    @Autowired
     private final UserServiceImpl userService;
-    @Autowired
     private final AuthenticationManager authenticationManager;
-    @Autowired
     private final PasswordEncoder passwordEncoder;
-    @Autowired
     private final JwtService jwtService;
 
     @Value("${attempts}")
