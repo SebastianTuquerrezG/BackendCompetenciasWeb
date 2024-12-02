@@ -4,7 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 **/.java~
-**/application.properties
 
 ### STS ###
 .apt_generated
@@ -15,11 +14,7 @@ target/
 .springBeans
 .sts4-cache
 **/desktop.ini
-<<<<<<< HEAD
-.ini
 **/.ini
-=======
->>>>>>> Docente
 
 ### IntelliJ IDEA ###
 .idea
@@ -39,7 +34,4 @@ build/
 
 ### VS Code ###
 .vscode/
-<<<<<<< HEAD
 .idea/
-=======
->>>>>>> Docente
