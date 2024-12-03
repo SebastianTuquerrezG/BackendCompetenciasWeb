@@ -20,7 +20,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: tomy2765
           MYSQL_DATABASE: competencias
         options: >-
-          --health-cmd='mysqladmin -u root -p"$MYSQL_ROOT_PASSWORD" ping --silent'
+          --health-cmd="mysqladmin -u root -ptomy2765 ping --silent"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -37,7 +37,7 @@ jobs:
 
     - name: Wait for MySQL to be ready
       run: |
-        while ! mysqladmin -h"localhost" -P"3306" -uroot -p$tomy2765 ping --silent; do
+        while ! mysqladmin -h"localhost" -P"3306" -uroot -ptomy2765 ping --silent; do
           echo "Waiting for MySQL to be ready..."
           sleep 5
         done
