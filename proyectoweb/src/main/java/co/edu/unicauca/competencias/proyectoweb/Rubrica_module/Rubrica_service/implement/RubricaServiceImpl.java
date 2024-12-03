@@ -2,12 +2,10 @@ package co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_service.
 
 import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_core.entities.RAAsignatura;
 import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_core.repositories.IRAAsignaturaRepository;
-import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_infraestructure.persistence.DTO.RAAsignaturaDTO;
 import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_core.entities.Rubrica;
 import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_core.repository.IRubricaRepository;
 import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_infrastucture.persistence.DTO.RubricaDTO;
 import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_service.repository.IRubricaService;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

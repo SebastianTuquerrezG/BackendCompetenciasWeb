@@ -1,9 +1,7 @@
 package co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_infrastucture.controllers;
 
-import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_infrastucture.persistence.DTO.CriterioDTO;
 import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_infrastucture.persistence.DTO.NivelDTO;
 import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_service.repository.INivelService;
-import io.swagger.models.auth.In;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

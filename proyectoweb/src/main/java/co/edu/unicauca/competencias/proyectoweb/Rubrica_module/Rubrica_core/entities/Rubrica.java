@@ -1,7 +1,6 @@
 package co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_core.entities;
 
 import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_core.entities.RAAsignatura;
-import io.swagger.models.auth.In;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

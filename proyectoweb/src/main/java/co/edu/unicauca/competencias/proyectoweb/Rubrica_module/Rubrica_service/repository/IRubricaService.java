@@ -1,9 +1,6 @@
 package co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_service.repository;
 
-import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_core.entities.RAAsignatura;
-import co.edu.unicauca.competencias.proyectoweb.RAAsignatura_module.RAAsignatura_infraestructure.persistence.DTO.RAAsignaturaDTO;
 import co.edu.unicauca.competencias.proyectoweb.Rubrica_module.Rubrica_infrastucture.persistence.DTO.RubricaDTO;
-import io.swagger.models.auth.In;
 
 import java.util.List;
 
