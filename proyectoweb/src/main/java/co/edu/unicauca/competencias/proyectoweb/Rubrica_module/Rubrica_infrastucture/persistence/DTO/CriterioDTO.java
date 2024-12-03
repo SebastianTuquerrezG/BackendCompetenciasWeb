@@ -4,16 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RubricaDTO {
+public class CriterioDTO {
     private Integer id;
-    private String nombre;
-    private Integer raAsignaturaId;
+    private String descripcion;
+    private Integer ponderacion;
+    private Integer rubricaId;
     private String estado;
-    private Date createAt;
-    private Date updateAt;
 }

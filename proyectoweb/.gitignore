@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 **/.java~
+.src/main/resources/
 
 ### STS ###
 .apt_generated
@@ -17,7 +18,7 @@ target/
 **/.ini
 
 ### IntelliJ IDEA ###
-.idea
+/.idea/
 *.iws
 *.iml
 *.ipr
