@@ -69,6 +69,12 @@ VALUES (1, 'EXCELENTE', 'Código limpio, modular y sin errores', '4.5-5.0'),
 (2, 'BUENO', 'Algoritmo eficiente, pero con posibles mejoras', '3.8-4.49'),
 (3, 'REGULAR', 'Documentación suficiente, pero no exhaustiva', '2.5-3.79');
 
+INSERT INTO asociar_periodo (id_asignatura, id_competencia_asignatura, id_teacher, periodo)
+VALUES 
+    (1, 1, 1, '2024-1'),
+    (1, 2, 2, '2024-1'), 
+    (2, 1, 2, '2024-2'),
+    (2, 2, 1, '2024-2'); 
 
 
 
