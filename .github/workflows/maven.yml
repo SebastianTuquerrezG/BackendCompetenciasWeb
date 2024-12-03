@@ -20,7 +20,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: tomy2765
           MYSQL_DATABASE: competencias
         options: >-
-          --health-cmd='mysqladmin ping --silent'
+          --health-cmd='mysqladmin -u root -ptomy2765 ping --silent' 
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
