@@ -3,8 +3,13 @@ select * from competencias_programa;
 select * from ra_programa;
 select * from ra_asignatura;
 select * from usuarios;
+select * from criterio_evaluacion;
+select * from rubrica;
+select * from nivel_desempenio;
 
 describe usuarios;
+
+describe nivel_desempenio;
 
 show tables;
 
@@ -30,3 +35,13 @@ FROM
 WHERE 
     TABLE_SCHEMA = 'competencias' 
     AND REFERENCED_TABLE_NAME IS NOT NULL;
+
+SELECT * 
+FROM information_schema.TABLE_CONSTRAINTS 
+WHERE TABLE_SCHEMA = 'competencias' 
+  AND TABLE_NAME = 'nivel_desempenio';
+  
+
+SHOW CREATE TABLE nivel_desempenio;
+
+ALTER TABLE nivel_desempenio DROP CHECK nivel_desempenio_chk_1;
