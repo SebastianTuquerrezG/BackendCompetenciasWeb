@@ -8,7 +8,7 @@ public interface CompetenciasProgramaServiceInt {
 
     CompetenciaProgramaDTO findById(Integer id);
 
-    void save(CompetenciaProgramaDTO competenciaPrograma);
+    CompetenciaProgramaDTO save(CompetenciaProgramaDTO competenciaPrograma);
 
     CompetenciaProgramaDTO update(CompetenciaProgramaDTO competenciaPrograma, Integer id);
 

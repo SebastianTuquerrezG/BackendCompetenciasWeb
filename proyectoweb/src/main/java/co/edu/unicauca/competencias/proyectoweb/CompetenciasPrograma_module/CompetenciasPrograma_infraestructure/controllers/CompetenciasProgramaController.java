@@ -38,8 +38,8 @@ public class CompetenciasProgramaController {
     }
 
     @PostMapping()
-    public void save(@RequestBody CompetenciaProgramaDTO competenciaPrograma) {
-        service.save(competenciaPrograma);
+    public CompetenciaProgramaDTO save(@RequestBody CompetenciaProgramaDTO competenciaPrograma) {
+        return service.save(competenciaPrograma);
     }
 
     @PutMapping("/{id}")

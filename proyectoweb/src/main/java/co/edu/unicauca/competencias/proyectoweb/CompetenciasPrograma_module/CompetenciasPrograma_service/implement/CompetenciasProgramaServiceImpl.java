@@ -112,7 +112,7 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
     }
 
     @Override
-    public void save(CompetenciaProgramaDTO competenciaPrograma){
+    public CompetenciaProgramaDTO save(CompetenciaProgramaDTO competenciaPrograma){
         CompetenciaPrograma competenciaProgramaEntity = this.modelMapper.map(competenciaPrograma, CompetenciaPrograma.class);
 
         if (competenciaProgramaEntity.getCompetenciaAsignaturaList() != null) {
@@ -125,7 +125,17 @@ public class CompetenciasProgramaServiceImpl implements CompetenciasProgramaServ
             );
         }
 
-        competenciasProgramaRepository.save(competenciaProgramaEntity);
+        CompetenciaPrograma entity = competenciasProgramaRepository.save(competenciaProgramaEntity);
+        return getCompetenciaPrograma(entity);
+    }
+
+    public CompetenciaProgramaDTO getCompetenciaPrograma(CompetenciaPrograma entity){
+        CompetenciaProgramaDTO value = new CompetenciaProgramaDTO();
+        value.setId(entity.getId());
+        value.setDescripcion(entity.getDescripcion());
+        value.setNivel(entity.getNivel().toString());
+        value.setEstado(entity.getEstado());
+        return value;
     }
 
     @Override
