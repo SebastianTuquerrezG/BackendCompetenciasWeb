@@ -44,9 +44,9 @@ public class RAAServiceImpl implements RAAServiceInt {
         return this.modelMapper.map(raAsignatura, RAAsignaturaDTO.class);
     }
 
-    public void save(RAAsignaturaDTO raPrograma){
+    public RAAsignaturaDTO save(RAAsignaturaDTO raPrograma){
         RAAsignatura raAsignaturaEntity = new RAAsignatura();
-        saveUpdate(raPrograma, raAsignaturaEntity);
+        return saveUpdate(raPrograma, raAsignaturaEntity);
     }
 
     public RAAsignaturaDTO update(RAAsignaturaDTO raPrograma, Integer id){
@@ -82,7 +82,7 @@ public class RAAServiceImpl implements RAAServiceInt {
         return null;
     }
 
-    private void saveUpdate(RAAsignaturaDTO raPrograma, RAAsignatura raAsignaturaEntity) {
+    private RAAsignaturaDTO saveUpdate(RAAsignaturaDTO raPrograma, RAAsignatura raAsignaturaEntity) {
         raAsignaturaEntity.setDescripcion(raPrograma.getDescripcion());
         raAsignaturaEntity.setEstado(CompetenciaAsignatura.Status.valueOf(raPrograma.getEstado()));
 
@@ -92,7 +92,8 @@ public class RAAServiceImpl implements RAAServiceInt {
             raAsignaturaEntity.setCompetenciaAsignatura(competenciaPrograma);
         }
 
-        raProgramaRepository.save(raAsignaturaEntity);
+        RAAsignatura entity = raProgramaRepository.save(raAsignaturaEntity);
+        return getRAAAsignaturaDTO(entity);
     }
 
     public boolean delete(Integer id){
@@ -108,5 +109,14 @@ public class RAAServiceImpl implements RAAServiceInt {
             return true;
         }
         return false;   
+    }
+
+    public RAAsignaturaDTO getRAAAsignaturaDTO(RAAsignatura entity){
+        RAAsignaturaDTO raAsignaturaDTO = new RAAsignaturaDTO();
+        raAsignaturaDTO.setId(entity.getId());
+        raAsignaturaDTO.setDescripcion(entity.getDescripcion());
+        raAsignaturaDTO.setIdCompetenciaAsignatura(entity.getCompetenciaAsignatura().getIdCompetenciaAsignatura());
+        raAsignaturaDTO.setEstado(entity.getEstado().toString());
+        return raAsignaturaDTO;
     }
 }

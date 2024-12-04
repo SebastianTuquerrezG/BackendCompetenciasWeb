@@ -83,6 +83,7 @@ public class AuthenticationServiceImpl implements iAuthService {
     // Maybe this register we wouldn't need it
     @Override
     public AuthResponseDTO register(RegisterRequestDTO request) {
+        System.out.println("Usuario a registrar: " + request);
         User user = new User();
         user.setIdentity(request.getIdentity());
         user.setTypeId(request.getTypeId());
@@ -117,7 +118,6 @@ public class AuthenticationServiceImpl implements iAuthService {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 if (jwtService.isTokenValid(token, userDetails)) {
-                    System.out.println("El token es válido. User: " + userDetails);
                     result = true;
                 }
             }

@@ -27,8 +27,8 @@ public class RAAsignaturaController {
     }
 
     @PostMapping()
-    public void save(@RequestBody RAAsignaturaDTO raPrograma) {
-        service.save(raPrograma);
+    public RAAsignaturaDTO save(@RequestBody RAAsignaturaDTO raPrograma) {
+        return service.save(raPrograma);
     }
 
     @PutMapping("/{id}")

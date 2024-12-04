@@ -9,7 +9,7 @@ public interface RAAServiceInt {
 
     RAAsignaturaDTO findById(Integer id);
 
-    void save(RAAsignaturaDTO raPrograma);
+    RAAsignaturaDTO save(RAAsignaturaDTO raPrograma);
 
     RAAsignaturaDTO update(RAAsignaturaDTO raPrograma, Integer id);
 

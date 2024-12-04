@@ -26,7 +26,7 @@ public class CompetenciaAsignatura {
     private Integer idCompetenciaAsignatura;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "competencia_programa", nullable = false)
+    @JoinColumn(name = "competencia_programa", nullable = false, foreignKey = @ForeignKey(name = "fk_competencia_programa"))
     @JsonBackReference
     private CompetenciaPrograma CompetenciaPrograma;
 
