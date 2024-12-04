@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -87,6 +88,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
         Teacher updatedTeacher = modelMapper.map(teacher, Teacher.class);
         updatedTeacher.setId(id);
+        updatedTeacher.setUpdated_at(new Date());
         updatedTeacher = teacherRepository.save(updatedTeacher);
         teacher.setId(updatedTeacher.getId());
         return Optional.of(teacher);

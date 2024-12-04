@@ -88,8 +88,8 @@ public class AsignaturaServiceImpl implements IAsignaturaService {
         }
         Asignatura asignaturaEntity = this.modelMapper.map(asignatura, Asignatura.class);
         asignaturaEntity.setId(id);
-        asignaturaEntity.setUpdated_at(new Date());
         asignaturaEntity = asignaturaRepository.save(asignaturaEntity);
+        asignaturaEntity.setUpdated_at(new Date());
         asignatura.setId(asignaturaEntity.getId());
         return Optional.of(asignatura);
     }
