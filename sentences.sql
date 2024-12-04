@@ -6,6 +6,7 @@ select * from usuarios;
 select * from criterio_evaluacion;
 select * from rubrica;
 select * from nivel_desempenio;
+select * from teachers;
 
 describe usuarios;
 

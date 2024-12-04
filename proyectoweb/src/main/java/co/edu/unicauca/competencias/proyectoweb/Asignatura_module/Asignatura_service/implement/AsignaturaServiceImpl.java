@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -87,6 +88,7 @@ public class AsignaturaServiceImpl implements IAsignaturaService {
         }
         Asignatura asignaturaEntity = this.modelMapper.map(asignatura, Asignatura.class);
         asignaturaEntity.setId(id);
+        asignaturaEntity.setUpdated_at(new Date());
         asignaturaEntity = asignaturaRepository.save(asignaturaEntity);
         asignatura.setId(asignaturaEntity.getId());
         return Optional.of(asignatura);
